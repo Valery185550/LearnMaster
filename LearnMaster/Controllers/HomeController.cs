@@ -1,16 +1,19 @@
 ﻿using LearnMaster.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace LearnMaster.Controllers
 {
+
+
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration Configuration;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IConfiguration configuration)
         {
-            _logger = logger;
+            this.Configuration = configuration;
         }
 
         public IActionResult Index()
@@ -18,15 +21,40 @@ namespace LearnMaster.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Registration(string name, string password, string role)
         {
-            return View();
+            using (LearnMasterContext db = new LearnMasterContext(Configuration["ConnectionString"]))
+            {
+                User u = new User() { Name = name, Password = password, Role = role };
+                db.Users.Add(u);
+                db.SaveChanges();
+            }
+            return View("LogIn");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Auth(string password)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            using (LearnMasterContext db = new LearnMasterContext(Configuration["ConnectionString"]))
+            {
+                User user = db.Users.Where(u => u.Password == password).ToList()[0];
+                if (user.Role == "Student")
+                {
+                    return View("StudentHomePage");
+                }
+                else if(user.Role=="Teacher")
+                {
+                    return View("TeacherHomePage");
+                }
+
+                return Content("Not fount");
+
+            }
         }
+
+        public IActionResult LogIn ()
+        {
+            return View("LogIn");
+        }
+
     }
 }
