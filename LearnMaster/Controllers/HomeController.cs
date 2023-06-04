@@ -1,11 +1,15 @@
 ﻿using LearnMaster.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace LearnMaster.Controllers
-{
-
+{ 
 
     public class HomeController : Controller
     {
@@ -18,42 +22,66 @@ namespace LearnMaster.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return Content("Server is started");
         }
 
-        public IActionResult Registration(string name, string password, string role)
+        [HttpPost]
+        public IActionResult Registration([FromBody] UserModel u)
         {
+            if (getUser(u.Password) != null)
+            {
+                
+                return Content("0");
+            }
             using (LearnMasterContext db = new LearnMasterContext(Configuration["ConnectionString"]))
             {
-                User u = new User() { Name = name, Password = password, Role = role };
-                db.Users.Add(u);
+                User newU = new User() { Name = u.Name, Password = u.Password, Role = u.Role };
+                db.Users.Add(newU);
                 db.SaveChanges();
             }
-            return View("LogIn");
+            return Content("1");
         }
 
-        public IActionResult Auth(string password)
+        public string Auth(string password)
+        {
+
+            User user = getUser(password);
+            if (user != null)
+            {
+                var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Name) };
+                var jwt = new JwtSecurityToken(
+                        issuer: AuthOptions.ISSUER,
+                        audience: AuthOptions.AUDIENCE,
+                        claims: claims,
+                        expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)), // время действия 2 минуты
+                        signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+
+                return new JwtSecurityTokenHandler().WriteToken(jwt);
+            }
+            else return "Not found";
+        }
+
+        private User getUser(string password)
         {
             using (LearnMasterContext db = new LearnMasterContext(Configuration["ConnectionString"]))
             {
-                User user = db.Users.Where(u => u.Password == password).ToList()[0];
-                if (user.Role == "Student")
-                {
-                    return View("StudentHomePage");
-                }
-                else if(user.Role=="Teacher")
-                {
-                    return View("TeacherHomePage");
-                }
+                List<User> users = db.Users.Where(u => u.Password == password).ToList();
 
-                return Content("Not fount");
+
+                if (users.Count == 0)
+                {
+                    return null;
+                }
+                else return users[0];
+
 
             }
         }
 
-        public IActionResult LogIn ()
+        [Authorize]
+        public string Hello()
         {
-            return View("LogIn");
+            return "Hello";
         }
 
     }
