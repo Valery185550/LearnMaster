@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IdentityServer.Controllers
 {
-    [SecurityHeaders]
+   
     [AllowAnonymous]
     public class HomeController : Controller
     {

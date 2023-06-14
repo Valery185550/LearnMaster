@@ -15,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
+    options.Authority = "https://localhost:5001";
     options.TokenValidationParameters = new TokenValidationParameters
     {
         // указывает, будет ли валидироваться издатель при валидации токена
@@ -32,6 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         // валидация ключа безопасности
         ValidateIssuerSigningKey = true,
     };
+
 });
 
 string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";

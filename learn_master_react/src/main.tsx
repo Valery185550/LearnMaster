@@ -11,13 +11,15 @@ import {
 import AuthPage from "./pages/auth/AuthPage"
 import StudentHomePage from "./pages/student/StudentHomePage"
 import TeacherHomePage from "./pages/teacher/TeacherHomePage";
+import Test from "./components/Test"
+import Callback from "./components/Callback"
 
 const router = createBrowserRouter([{
   path:"/",
   element:<RegistrationPage/>
   },
   {
-    path:"AuthPage",
+    path:"/AuthPage",
     element:<AuthPage/>
   },
   {
@@ -27,7 +29,16 @@ const router = createBrowserRouter([{
   {
     path:"/Teacher",
     element:<TeacherHomePage/>
+  },
+  {
+    path:"/Logout",
+    element:<Test/>
+  },
+  {
+    path:"/CallBack",
+    element:<Callback/>
   }
+  
 ])
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

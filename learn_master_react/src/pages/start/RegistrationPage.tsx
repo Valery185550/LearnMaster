@@ -1,10 +1,21 @@
 import React from 'react';
 import styles from "./RegistrationPage.module.css";
 import {useForm} from "react-hook-form";
-import {Link} from "react-router-dom";
 import { ErrorMessage } from '@hookform/error-message';
 import LoginInput from '../../components/loginInput/LoginInput';
 import Error from '../../components/error/Error';
+import { UserManager } from "oidc-client-ts" 
+
+var config = {
+    authority: "https://localhost:5001",
+    client_id: "js",
+    redirect_uri: "https://localhost:5173",
+    response_type: "code",
+    scope:"api1",
+    post_logout_redirect_uri : "https://localhost:5173",
+};
+
+export const um = new UserManager(config);
 
 export default function Page() {
 
@@ -28,6 +39,10 @@ export default function Page() {
 
     }
 
+
+    function identityServerAuth(){
+        um.signinRedirect();
+    }
 
   return (
     <div className={styles.main}>
@@ -58,7 +73,7 @@ export default function Page() {
         </form>
         <br/><br/>
 
-        <Link className={styles.link} to="/AuthPage">Have an account already?</Link>
+        <a className={styles.link} onClick={identityServerAuth} >Have an account already?</a>
     </div>
   )
 }
