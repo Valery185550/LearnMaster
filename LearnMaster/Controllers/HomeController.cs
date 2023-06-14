@@ -21,9 +21,10 @@ namespace LearnMaster.Controllers
             this.Configuration = configuration;
         }
 
+        
         public IActionResult Index()
         {
-            return Content("Server is started");
+            return File("index.html", "text/html");
         }
 
 

@@ -11,13 +11,14 @@ import {
 import AuthPage from "./pages/auth/AuthPage"
 import StudentHomePage from "./pages/student/StudentHomePage"
 import TeacherHomePage from "./pages/teacher/TeacherHomePage";
+import Test from "./components/Test"
 
 const router = createBrowserRouter([{
   path:"/",
   element:<RegistrationPage/>
   },
   {
-    path:"AuthPage",
+    path:"/AuthPage",
     element:<AuthPage/>
   },
   {
@@ -27,7 +28,13 @@ const router = createBrowserRouter([{
   {
     path:"/Teacher",
     element:<TeacherHomePage/>
+  },
+  {
+    path:"/Hello",
+    element:<Test/>
   }
+
+  
 ])
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

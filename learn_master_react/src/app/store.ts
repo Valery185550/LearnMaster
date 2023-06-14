@@ -1,10 +1,16 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
 import userReducer  from "./userSlice"; 
+import { courseSlice } from "./coursesSlice";
 
 export const store = configureStore({
   reducer: {
-    user:userReducer
+    user:userReducer,
+    [courseSlice.reducerPath]:courseSlice.reducer,
   },
+  
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(courseSlice.middleware),
+
   
 })
 
