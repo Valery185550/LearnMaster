@@ -37,7 +37,9 @@ namespace IdentityServer
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireClientSecret = false,
 
+
                     RedirectUris =           { "https://localhost:5173" },
+
                     AllowedCorsOrigins =     { "https://localhost:5173" },
 
                     AllowedScopes =

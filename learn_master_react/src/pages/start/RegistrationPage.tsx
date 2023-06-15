@@ -5,6 +5,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import LoginInput from '../../components/loginInput/LoginInput';
 import Error from '../../components/error/Error';
 import { UserManager } from "oidc-client-ts" 
+<<<<<<< HEAD
 
 var config = {
     authority: "https://localhost:5001",
@@ -16,6 +17,8 @@ var config = {
 };
 
 export const um = new UserManager(config);
+=======
+>>>>>>> fb6ea660b66cd27b7cebd49ae7b288e15d5d27a2
 
 export default function Page() {
 
@@ -39,6 +42,19 @@ export default function Page() {
 
     }
 
+    var config = {
+        authority: "https://localhost:5001",
+        client_id: "js",
+        redirect_uri: "https://localhost:5173/Hello",
+        response_type: "code",
+        scope:"api1",
+        post_logout_redirect_uri : "/",
+      };
+      
+      
+    function identityServerAuth(){
+        new UserManager(config).signinRedirect();
+    }
 
     function identityServerAuth(){
         um.signinRedirect();

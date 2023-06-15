@@ -19,7 +19,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using static IdentityModel.OidcConstants;
 
 namespace IdentityServer.Controllers
 {
@@ -41,12 +40,14 @@ namespace IdentityServer.Controllers
             _users = users ?? new TestUserStore(TestUsers.Users);
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
         {
             Debugger.Break();
             return RedirectPermanent("https://localhost:5173/AuthPage");
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
@@ -60,6 +61,7 @@ namespace IdentityServer.Controllers
                     DisplayName = user.Username
                 };
                 await HttpContext.SignInAsync(isuser);
+
                 return RedirectPermanent("https://localhost:5173/Logout");
             }
             return Content("Not logged in");
@@ -76,8 +78,6 @@ namespace IdentityServer.Controllers
 
             return Content("Not Logged out");
         }
-
-
 
 
     }
