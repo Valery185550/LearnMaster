@@ -24,7 +24,7 @@ namespace LearnMaster.Controllers
         
         public IActionResult Index()
         {
-            return File("index.html", "text/html");
+            return File("/index.html", "text/html");
         }
 
 
@@ -43,26 +43,6 @@ namespace LearnMaster.Controllers
                 db.SaveChanges();
             }
             return Content("1");
-        }
-
-        public string Auth(string password)
-        {
-
-            User user = getUser(password);
-            string uId = user.Id.ToString();
-            if (user != null)
-            {
-                var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Name), new Claim("Password", user.Password), new Claim ("Id", user.Id.ToString())};
-                var jwt = new JwtSecurityToken(
-                        issuer: AuthOptions.ISSUER,
-                        audience: AuthOptions.AUDIENCE,
-                        claims: claims,
-                        expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(120)), // время действия 2 минуты
-                        signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
-                return new JwtSecurityTokenHandler().WriteToken(jwt);
-            }
-            else return "Not found";
         }
 
         private User getUser(string password)

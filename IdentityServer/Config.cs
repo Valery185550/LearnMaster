@@ -1,53 +1,57 @@
-﻿using IdentityServer4;
-using IdentityServer4.Models;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
+using IdentityModel;
 
-namespace IdentityServer
+namespace IdentityServer;
+
+public static class Config
 {
-    public class Config
-    {
-        public static IEnumerable<ApiScope> ApiScopes =>
-           new List<ApiScope>
-           {
-                new ApiScope("api1", "My API")
-           };
-
-        public static IEnumerable<Client> Clients =>
-            new List<Client>
+    public static IEnumerable<IdentityResource> IdentityResources =>
+        new List<IdentityResource>
+        { 
+            new IdentityResources.OpenId(),
+            new IdentityResources.Profile(),
+            new IdentityResource()
             {
-                new Client
-                {
-                    ClientId = "client",
-
-                    // no interactive user, use the clientid/secret for authentication
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    // secret for authentication
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-
-                    // scopes that client has access to
-                    AllowedScopes = { "api1" }
-                },
-                new Client
-                {
-                    ClientId = "js",
-                    ClientName = "JavaScript Client",
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RequireClientSecret = false,
-
-
-                    RedirectUris =           { "https://localhost:5173" },
-
-                    AllowedCorsOrigins =     { "https://localhost:5173" },
-
-                    AllowedScopes =
-                    {
-                        "api1"
-                    }
+                Name = "verification",
+                UserClaims = new List<string> 
+                { 
+                    JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified
                 }
-            };
+            }
+        };
 
-    }
+    public static IEnumerable<ApiScope> ApiScopes =>
+        new List<ApiScope>
+        { 
+            new ApiScope("api1", "MyAPI") 
+        };
+
+    
+
+    public static IEnumerable<Client> Clients =>
+        new List<Client> 
+        {
+
+            new Client
+            {
+                ClientId = "js",
+                ClientName = "JavaScript Client",
+                AllowedGrantTypes = GrantTypes.Code,
+                RequireClientSecret = false,
+
+                RedirectUris =           { "https://localhost:5003/callback.html" },
+                PostLogoutRedirectUris = { "https://localhost:5003/index.html" },
+                AllowedCorsOrigins =     { "https://localhost:5003" },
+
+                AllowedScopes =
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    "api1"
+                }
+            }
+
+        };
 }
