@@ -22,7 +22,7 @@ var config = {
   client_id: "js",
   redirect_uri: "https://localhost:5003/callback.html",
   response_type: "code",
-  scope: "openid profile api1",
+    scope: "openid profile api1 color",
   post_logout_redirect_uri: "https://localhost:5003/index.html",
 };
 var mgr = new Oidc.UserManager(config);
@@ -32,8 +32,8 @@ mgr.events.addUserSignedOut(function () {
 });
 
 mgr.getUser().then(function (user) {
-  if (user) {
-    log("User logged in", user.profile);
+    if (user) {
+    log("User logged in", user.profile.favorite_color);
   } else {
     log("User not logged in");
   }
