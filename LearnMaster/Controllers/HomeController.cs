@@ -24,9 +24,13 @@ namespace LearnMaster.Controllers
         
         public IActionResult Index()
         {
-            return File("/index.html", "text/html");
+            return View();
         }
 
+        public IActionResult Student()
+        {
+            return File("/index.html", "text/html");
+        }
 
         [HttpPost]
         public IActionResult Registration([FromBody] UserModel u)

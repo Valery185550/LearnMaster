@@ -5,23 +5,21 @@ import { ErrorMessage } from '@hookform/error-message';
 import LoginInput from '../../components/loginInput/LoginInput';
 import Error from '../../components/error/Error';
 import { UserManager } from "oidc-client-ts" 
-<<<<<<< HEAD
+import { useHref } from 'react-router-dom';
 
 var config = {
     authority: "https://localhost:5001",
     client_id: "js",
-    redirect_uri: "https://localhost:5173",
+    redirect_uri: "https://localhost:5003/callback.html",
     response_type: "code",
-    scope:"api1",
-    post_logout_redirect_uri : "https://localhost:5173",
+    scope:"openid profile api1",
+    post_logout_redirect_uri : "https://localhost:5003/index.html",
 };
 
-export const um = new UserManager(config);
-=======
->>>>>>> fb6ea660b66cd27b7cebd49ae7b288e15d5d27a2
-
+const um = new UserManager(config);
 export default function Page() {
 
+    console.log(window.location);
     const {register, handleSubmit, formState: { errors }} = useForm({criteriaMode: "all", mode: "onChange"});
     const onSubmit = async (data:object) => {
 
@@ -40,26 +38,15 @@ export default function Page() {
             alert("registered");
         }
 
-    }
-
-    var config = {
-        authority: "https://localhost:5001",
-        client_id: "js",
-        redirect_uri: "https://localhost:5173/Hello",
-        response_type: "code",
-        scope:"api1",
-        post_logout_redirect_uri : "/",
-      };
-      
-      
-    function identityServerAuth(){
-        new UserManager(config).signinRedirect();
-    }
-
+    }     
     function identityServerAuth(){
         um.signinRedirect();
     }
 
+    um.getUser().then(function (user) {
+        console.log(user);
+    });
+    
   return (
     <div className={styles.main}>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>

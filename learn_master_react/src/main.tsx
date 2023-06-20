@@ -11,11 +11,7 @@ import {
 import AuthPage from "./pages/auth/AuthPage"
 import StudentHomePage from "./pages/student/StudentHomePage"
 import TeacherHomePage from "./pages/teacher/TeacherHomePage";
-import Test from "./components/Test"
-<<<<<<< HEAD
-import Callback from "./components/Callback"
-=======
->>>>>>> fb6ea660b66cd27b7cebd49ae7b288e15d5d27a2
+import { AuthProvider } from 'oidc-react';
 
 const router = createBrowserRouter([{
   path:"/",
@@ -33,28 +29,15 @@ const router = createBrowserRouter([{
     path:"/Teacher",
     element:<TeacherHomePage/>
   },
-  {
-<<<<<<< HEAD
-    path:"/Logout",
-    element:<Test/>
-  },
-  {
-    path:"/CallBack",
-    element:<Callback/>
-  }
-=======
-    path:"/Hello",
-    element:<Test/>
-  }
-
->>>>>>> fb6ea660b66cd27b7cebd49ae7b288e15d5d27a2
   
 ])
 
+console.log(window.location)
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
   </React.StrictMode>,
 )
