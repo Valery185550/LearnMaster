@@ -15,11 +15,8 @@
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
-    "@nevzatcirak/react-oidc-client": "^1.0.7",
     "@reduxjs/toolkit": "^1.8.1",
-    "oidc-client": "^1.11.5",
     "oidc-client-ts": "^2.2.4",
-    "oidc-react": "^3.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-oidc-context": "^2.2.2",

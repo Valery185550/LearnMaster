@@ -1,25 +1,39 @@
-import React from 'react';
-import styles from "./RegistrationPage.module.css";
-import {useForm} from "react-hook-form";
+import React from "react";
+import styles from "./HomePage.module.css";
+import { useAuth } from "react-oidc-context";
 import { ErrorMessage } from '@hookform/error-message';
 import LoginInput from '../../components/loginInput/LoginInput';
 import Error from '../../components/error/Error';
-import { UserManager } from "oidc-client-ts" 
-import { useHref } from 'react-router-dom';
+import {useForm} from "react-hook-form";
 
-var config = {
-    authority: "https://localhost:5001",
-    client_id: "js",
-    redirect_uri: "https://localhost:5003/callback.html",
-    response_type: "code",
-    scope:"openid profile api1",
-    post_logout_redirect_uri : "https://localhost:5003/index.html",
-};
+export function HomePage() {
 
-const um = new UserManager(config);
-export default function Page() {
+    const auth = useAuth();
 
-    console.log(window.location);
+    switch (auth.activeNavigator) {
+        case "signinSilent":
+            return <div>Signing you in...</div>;
+        case "signoutRedirect":
+            return <div>Signing you out...</div>;
+    }
+
+    if (auth.isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (auth.error) {
+        return <div>Oops... {auth.error.message}</div>;
+    }
+
+    if (auth.isAuthenticated) {
+        return (
+        <div>
+            Hello {auth.user?.profile.sub}{" "}
+            <button onClick={() => void auth.signoutRedirect({post_logout_redirect_uri:"https://localhost:5003"})}>Log out</button>
+        </div>
+        );
+    }
+
     const {register, handleSubmit, formState: { errors }} = useForm({criteriaMode: "all", mode: "onChange"});
     const onSubmit = async (data:object) => {
 
@@ -39,15 +53,8 @@ export default function Page() {
         }
 
     }     
-    function identityServerAuth(){
-        um.signinRedirect();
-    }
 
-    um.getUser().then(function (user) {
-        console.log(user);
-    });
-    
-  return (
+    return (
     <div className={styles.main}>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 
@@ -76,7 +83,7 @@ export default function Page() {
         </form>
         <br/><br/>
 
-        <a className={styles.link} onClick={identityServerAuth} >Have an account already?</a>
+        <a className={styles.link} onClick={() => void auth.signinRedirect()} >Have an account already?</a>
     </div>
   )
 }

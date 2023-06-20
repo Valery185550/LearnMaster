@@ -2,24 +2,19 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import { Provider } from "react-redux"
 import { store } from "./app/store"
-import RegistrationPage from "./pages/start/RegistrationPage"
+import {HomePage} from "./pages/start/HomePage"
 import "./index.css"
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import AuthPage from "./pages/auth/AuthPage"
 import StudentHomePage from "./pages/student/StudentHomePage"
 import TeacherHomePage from "./pages/teacher/TeacherHomePage";
-import { AuthProvider } from 'oidc-react';
+import { AuthProvider } from "react-oidc-context";
 
 const router = createBrowserRouter([{
   path:"/",
-  element:<RegistrationPage/>
-  },
-  {
-    path:"/AuthPage",
-    element:<AuthPage/>
+  element:<HomePage/>
   },
   {
     path:"/Student",
@@ -32,12 +27,18 @@ const router = createBrowserRouter([{
   
 ])
 
-console.log(window.location)
+const oidcConfig = {
+  authority: "https://localhost:5001",
+  client_id: "js",
+  redirect_uri: "https://localhost:5003",
+  response_type: "code",
+  scope:"openid profile api1"
+};
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+    <AuthProvider {...oidcConfig} >
       <Provider store={store}>
-        <RouterProvider router={router} />
+          <RouterProvider router={router} />
       </Provider>
-  </React.StrictMode>,
+    </AuthProvider>
 )
