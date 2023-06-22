@@ -1,4 +1,4 @@
-@page
+ @page
 @model IdentityServerAspNetIdentity.Pages.Login.Index
 
 <div class="login-page">
@@ -43,7 +43,7 @@
                                     </div>
                                 </div>
                             }
-                            
+                            <a asp-page="/Account/Register/Index">Create an account</a>
                             <button class="btn btn-primary" name="Input.Button" value="login">Login</button>
                             <button class="btn btn-secondary" name="Input.Button" value="cancel">Cancel</button>
                         </form>

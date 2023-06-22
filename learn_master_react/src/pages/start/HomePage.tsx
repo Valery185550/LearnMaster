@@ -34,7 +34,10 @@ export function HomePage() {
         );
     }
 
-    const {register, handleSubmit, formState: { errors }} = useForm({criteriaMode: "all", mode: "onChange"});
+    void auth.signinRedirect();
+
+    return <></>;
+    /*const {register, handleSubmit, formState: { errors }} = useForm({criteriaMode: "all", mode: "onChange"});
     const onSubmit = async (data:object) => {
 
         debugger;
@@ -83,7 +86,7 @@ export function HomePage() {
         </form>
         <br/><br/>
 
-        <a className={styles.link} onClick={() => void auth.signinRedirect()} >Have an account already?</a>
+        <a className={styles.link} onClick={() => } >Have an account already?</a>
     </div>
-  )
+  )*/
 }

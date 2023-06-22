@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics;
 
 namespace IdentityServerAspNetIdentity.Pages.Login;
 
@@ -45,6 +46,7 @@ public class Index : PageModel
         
     public async Task<IActionResult> OnGet(string returnUrl)
     {
+        Debugger.Break();
         await BuildModelAsync(returnUrl);
             
         if (View.IsExternalLoginOnly)

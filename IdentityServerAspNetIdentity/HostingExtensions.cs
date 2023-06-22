@@ -1,8 +1,10 @@
 using Duende.IdentityServer;
 using IdentityServerAspNetIdentity.Data;
 using IdentityServerAspNetIdentity.Models;
+using IdentityServerAspNetIdentity.Pages.Register;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace IdentityServerAspNetIdentity;
@@ -65,9 +67,8 @@ internal static class HostingExtensions
         app.UseRouting();
         app.UseIdentityServer();
         app.UseAuthorization();
-        
-        app.MapRazorPages()
-            .RequireAuthorization();
+
+        app.MapRazorPages();
 
         return app;
     }

@@ -1,11 +1,15 @@
-﻿using IdentityServerAspNetIdentity;
+using IdentityServerAspNetIdentity;
 using Serilog;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using IdentityServerAspNetIdentity.Data;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
 
 Log.Information("Starting up");
+
 
 try
 {
