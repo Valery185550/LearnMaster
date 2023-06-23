@@ -16,9 +16,9 @@ namespace IdentityServerAspNetIdentity
         {
             var principal = await GetUserClaimsAsync(user);
             var id = (ClaimsIdentity)principal.Identity;
-            if (!string.IsNullOrEmpty(user.FavoriteColor))
+            if (!string.IsNullOrEmpty(user.Role))
             {
-                id.AddClaim(new Claim("favorite_color", user.FavoriteColor));
+                id.AddClaim(new Claim("user_role", user.Role));
             }
 
             context.AddRequestedClaims(principal.Claims);

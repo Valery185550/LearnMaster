@@ -9,7 +9,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import StudentHomePage from "./pages/student/StudentHomePage"
-import TeacherHomePage from "./pages/teacher/TeacherHomePage";
+import {TeacherHomePage} from "./pages/teacher/TeacherHomePage";
 import { AuthProvider } from "react-oidc-context";
 
 const router = createBrowserRouter([{
@@ -32,11 +32,13 @@ const oidcConfig = {
   client_id: "js",
   redirect_uri: "https://localhost:5003",
   response_type: "code",
-  scope:"openid profile api1"
+  scope:"openid profile api1 role",
+  
 };
 
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <AuthProvider {...oidcConfig} >
+    <AuthProvider {...oidcConfig} loadUserInfo={true}>
       <Provider store={store}>
           <RouterProvider router={router} />
       </Provider>

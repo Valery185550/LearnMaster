@@ -1,14 +1,14 @@
 import React from "react";
 import styles from "./HomePage.module.css";
-import { useAuth } from "react-oidc-context";
-import { ErrorMessage } from '@hookform/error-message';
-import LoginInput from '../../components/loginInput/LoginInput';
-import Error from '../../components/error/Error';
-import {useForm} from "react-hook-form";
+import { AuthContextProps, useAuth } from "react-oidc-context";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+export let auth:AuthContextProps;
+
 
 export function HomePage() {
 
-    const auth = useAuth();
+    auth  = useAuth();
 
     switch (auth.activeNavigator) {
         case "signinSilent":
@@ -21,72 +21,23 @@ export function HomePage() {
         return <div>Loading...</div>;
     }
 
-    if (auth.error) {
-        return <div>Oops... {auth.error.message}</div>;
-    }
-
+    let nav = "";
+    const navigate = useNavigate();
+    useEffect(()=>{ navigate(nav)},[nav]);
+   
     if (auth.isAuthenticated) {
-        return (
-        <div>
-            Hello {auth.user?.profile.sub}{" "}
-            <button onClick={() => void auth.signoutRedirect({post_logout_redirect_uri:"https://localhost:5003"})}>Log out</button>
-        </div>
-        );
+
+        
+        if(auth.user?.profile.user_role == "Teacher"){
+            nav="/Teacher"
+        }
+        nav = "/Student"
+        return <></>
     }
 
-    void auth.signinRedirect();
+    auth.signinRedirect();
 
-    return <></>;
-    /*const {register, handleSubmit, formState: { errors }} = useForm({criteriaMode: "all", mode: "onChange"});
-    const onSubmit = async (data:object) => {
+    return <></>
+    
 
-        debugger;
-        let response = await fetch("https://localhost:7282/Home/Registration", {
-            method:"POST",
-            headers: { "Accept": "application/json", "Content-Type": "application/json"},
-            body:JSON.stringify(data)
-        });
-
-        let result = await response.text();
-        if(+result === 0){
-            alert("Already exists");
-        }
-        else if(+result === 1){
-            alert("registered");
-        }
-
-    }     
-
-    return (
-    <div className={styles.main}>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-
-            
-            <LoginInput inputName='name' label='Username' placeholder='Enter your name' register={register}/>
-            <ErrorMessage  errors={errors} name="name" render={({ message }) => <Error message={message}/>}/>
-      
-            <br/><br/>
-
-            <LoginInput inputName='password' label='Password' placeholder='Enter your password:' register={register}/>
-            <ErrorMessage errors={errors} name="password" render={({ message }) => <Error message={message}/>}/>
-            <br/><br/>
-
-            <div className={styles.selectBlock}>
-                <label>Choose who you are: </label>
-                <select className={styles.selectBlock__select} {...register("role")} >
-                    <option value="Student">Student</option>
-                    <option  value="Teacher">Teacher</option>
-                </select>
-            </div>
-            
-            
-            <br/><br/>
-
-            <input className={styles.submit} type='submit' value="Submit"/>
-        </form>
-        <br/><br/>
-
-        <a className={styles.link} onClick={() => } >Have an account already?</a>
-    </div>
-  )*/
 }

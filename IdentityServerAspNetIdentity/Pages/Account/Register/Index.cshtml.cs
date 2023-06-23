@@ -43,6 +43,8 @@ namespace IdentityServerAspNetIdentity.Pages.Register
         /// </summary>
         public string ReturnUrl { get; set; }
 
+        public string Role { get; set; }
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -83,35 +85,45 @@ namespace IdentityServerAspNetIdentity.Pages.Register
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
+         
 
-
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string redirect_uri = null)
         {
-            ReturnUrl = returnUrl;
+            ReturnUrl = redirect_uri;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            Debugger.Break();
+            
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl, string user_role)
         {
-           
-            if (ModelState.IsValid)
+            Debugger.Break();
+            try
             {
-                var user = Activator.CreateInstance<ApplicationUser>();
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                var result = _userManager.CreateAsync(user, Input.Password).Result;
+                if (ModelState.IsValid)
+                {
+                    var user = new ApplicationUser { Role = user_role };
+                    await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                    var result = _userManager.CreateAsync(user, Input.Password).Result;
 
-                await _userManager.AddClaimsAsync(user, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, Input.Email),
-                });
-                if (result.Succeeded)
-                {
-                    return Redirect("/Account/Login?returnUrl = " + returnUrl);
+                    await _userManager.AddClaimsAsync(user, new Claim[]{
+                        new Claim(JwtClaimTypes.Name, Input.Email),
+                    });
+
+                    if (result.Succeeded)
+                    {
+                        return Redirect($"/Account/Login/Index?returnUrl={returnUrl}");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
-                
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+            }
+            catch (Exception ex)
+            {
+               Console.WriteLine(ex.ToString());
             }
 
             return Page();

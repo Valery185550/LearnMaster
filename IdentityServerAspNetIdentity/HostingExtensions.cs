@@ -42,7 +42,7 @@ internal static class HostingExtensions
         builder.Services.AddAuthentication()
             .AddGoogle(options =>
             {
-                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+               
 
                 // register your IdentityServer with Google at https://console.developers.google.com
                 // enable the Google+ API

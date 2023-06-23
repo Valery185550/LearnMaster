@@ -10,7 +10,7 @@ public static class Config
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
-            new IdentityResource("color", new [] { "favorite_color" }),
+            new IdentityResource("role", new [] { "user_role" }),
         };
 
     public static IEnumerable<ApiScope> ApiScopes =>
@@ -38,6 +38,8 @@ public static class Config
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     "api1",
+                    "role",
+
                 }
             }
         };
