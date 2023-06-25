@@ -20,12 +20,10 @@ namespace LearnMaster.Controllers
             this.Configuration = configuration;
         }
 
-        public IActionResult Index()
-        {
-            return Content("Server is started");
-        }
+        
+       
 
-        [HttpPost]
+        /*[HttpPost]
         public IActionResult Registration([FromBody] UserModel u)
         {
             if (getUser(u.Password) != null)
@@ -42,25 +40,6 @@ namespace LearnMaster.Controllers
             return Content("1");
         }
 
-        public string Auth(string password)
-        {
-
-            User user = getUser(password);
-            if (user != null)
-            {
-                var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Name) };
-                var jwt = new JwtSecurityToken(
-                        issuer: AuthOptions.ISSUER,
-                        audience: AuthOptions.AUDIENCE,
-                        claims: claims,
-                        expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)), // время действия 2 минуты
-                        signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
-                return new JwtSecurityTokenHandler().WriteToken(jwt);
-            }
-            else return "Not found";
-        }
-
         private User getUser(string password)
         {
             using (LearnMasterContext db = new LearnMasterContext(Configuration["ConnectionString"]))
@@ -72,17 +51,68 @@ namespace LearnMaster.Controllers
                 {
                     return null;
                 }
-                else return users[0];
+                else
+                {
+                    return users[0];
+                }
 
 
             }
         }
 
         [Authorize]
-        public string Hello()
+
+        public IActionResult Courses()
         {
-            return "Hello";
+            using (LearnMasterContext db = new LearnMasterContext(Configuration["ConnectionString"]))
+            {
+                string userPassword = HttpContext.User.FindFirst("Password").Value;
+                
+                User user = db.Users.Include(u => u.UsersCourses).ThenInclude(uc=>uc.Course).Where(u => u.Password == userPassword).ToList()[0];
+                List<string> courses = new List<string>();
+                foreach(UsersCourse uc in user.UsersCourses)
+                {
+                    courses.Add(uc.Course.Name);
+
+                }
+
+                return Json(courses);
+            }
         }
+
+
+        [Authorize]
+        public IActionResult CreateCourse([FromBody]CourseModel course)
+        {
+            using (LearnMasterContext db = new LearnMasterContext(Configuration["ConnectionString"]))
+            {
+                Course newCourse = new Course { Name = course.Name };
+                db.Add(newCourse);
+                db.SaveChanges();
+
+                Debugger.Break();
+                int userId = 0; 
+
+                try
+                {
+                   userId = Int32.Parse(HttpContext.User.FindFirst("Id").Value);
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+
+                UsersCourse uc = new UsersCourse {CourseId = newCourse.Id, UserId = userId};
+                db.Add(uc);
+                db.SaveChanges();
+                
+            }
+
+            return Content("Created");
+        }*/
+
+
 
     }
 }
