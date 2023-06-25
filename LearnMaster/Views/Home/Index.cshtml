@@ -1,28 +1,8 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
 
 <div class="text-center">
-    <form action="Home/Registration">
-        <p>Registration</p>
-        <br /><br />
-
-        <label>Enter your name:</label>
-        <my-input/>
-        <br /><br />
-
-        <label>Enter your password:</label>
-        <input minlength="8" name="password"/>
-        <br /><br />
-
-        <label>Select who are you</label>
-        <select name="role">
-            <option value="Student">Student</option>
-            <option value="Teacher">Teacher</option>
-        </select>
-        <br /><br />
-
-        <input type="submit"/>
-    </form>
-    <br /><br />
-
-    <a href="Home/LogIn">Have already an account?</a>
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
