@@ -1,6 +1,4 @@
-export type User = {
-    id:number,
+export type Course = {
     name:string,
-    password:string,
-    role:string
+    description:string
 }

@@ -35,7 +35,6 @@ public class Index : PageModel
         var context = await _interaction.GetLogoutContextAsync(logoutId);
         await _signInManager.SignOutAsync();
         Debugger.Break();
-
         // see if we need to trigger federated logout
         var idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
 

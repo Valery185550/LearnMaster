@@ -29,6 +29,7 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.Code,
                 RequireClientSecret = false,
 
+
                 RedirectUris =           { "https://localhost:5003" },
                 PostLogoutRedirectUris = { "https://localhost:5003" },
                 AllowedCorsOrigins =     { "https://localhost:5003" },

@@ -25,10 +25,7 @@ internal static class HostingExtensions
         builder.Services
             .AddIdentityServer(options =>
             {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
+                
 
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
                 options.EmitStaticAudienceClaim = true;
@@ -66,9 +63,10 @@ internal static class HostingExtensions
         app.UseStaticFiles();
         app.UseRouting();
         app.UseIdentityServer();
+
         app.UseAuthorization();
 
-        app.MapRazorPages();
+        app.MapRazorPages().RequireAuthorization();
 
         return app;
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LearnMaster;
+namespace WebApi;
 
 public partial class Grade
 {
@@ -9,11 +9,11 @@ public partial class Grade
 
     public long LessonId { get; set; }
 
-    public long UserId { get; set; }
-
     public long Grade1 { get; set; }
 
-    public virtual Lesson Lesson { get; set; } = null!;
+    public string StudentId { get; set; } = null!;
 
-    public virtual User User { get; set; } = null!;
+    public string TeacherId { get; set; } = null!;
+
+    public virtual Lesson Lesson { get; set; } = null!;
 }

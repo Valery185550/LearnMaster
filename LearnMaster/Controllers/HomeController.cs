@@ -14,7 +14,6 @@ namespace LearnMaster.Controllers
     public class HomeController : Controller
     {
         private readonly IConfiguration Configuration;
-        private User currentUser;
 
         public HomeController(IConfiguration configuration)
         {
@@ -22,17 +21,9 @@ namespace LearnMaster.Controllers
         }
 
         
-        public IActionResult Index()
-        {
-            return View();
-        }
+       
 
-        public IActionResult Student()
-        {
-            return File("/index.html", "text/html");
-        }
-
-        [HttpPost]
+        /*[HttpPost]
         public IActionResult Registration([FromBody] UserModel u)
         {
             if (getUser(u.Password) != null)
@@ -119,7 +110,7 @@ namespace LearnMaster.Controllers
             }
 
             return Content("Created");
-        }
+        }*/
 
 
 

@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import StudentHomePage from "./pages/student/StudentHomePage"
 import {TeacherHomePage} from "./pages/teacher/TeacherHomePage";
-import { AuthProvider } from "react-oidc-context";
+import { AuthProvider, AuthProviderProps } from "react-oidc-context";
 
 const router = createBrowserRouter([{
   path:"/",
@@ -27,13 +27,13 @@ const router = createBrowserRouter([{
   
 ])
 
-const oidcConfig = {
+const oidcConfig:AuthProviderProps = {
   authority: "https://localhost:5001",
   client_id: "js",
   redirect_uri: "https://localhost:5003",
   response_type: "code",
   scope:"openid profile api1 role",
-  
+  post_logout_redirect_uri:"https://localhost:5003"
 };
 
 
