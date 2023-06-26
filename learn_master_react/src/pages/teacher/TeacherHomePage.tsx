@@ -13,8 +13,8 @@ export function TeacherHomePage() {
   let [courses, setCourses] = useState<Course[]>([]);
  
 
-  async function myFetch(){
-    const t = await fetch (`https://localhost:7002`, {
+  async function getCourses(){
+    const t = await fetch (`https://localhost:7002/getCourses`, {
           headers:{
               "Accept": "application/json",
               "Authorization": "Bearer " + sessionStorage.getItem("tokenKey")
@@ -25,7 +25,7 @@ export function TeacherHomePage() {
       debugger;
   }
   
-  useEffect(()=>{myFetch()},[])
+  useEffect(()=>{getCourses()},[])
 
 
   return (
@@ -33,10 +33,12 @@ export function TeacherHomePage() {
       <img className={styles.logo} src={logo}/>
       <h2 className={styles.header}>Your courses</h2>
       <div className={styles.content}>
-        {courses.map((c)=><CourseCard title={c.name} description={c.description} />)}
-        <CourseCard title='' description=''/>
-        <button onClick={()=>{auth.signoutRedirect()}}>Log Out</button>
+        {courses.map((c)=><CourseCard id={c.id} getCourses={getCourses} title={c.name} description={c.description} />)}
+        <CourseCard id={-1} getCourses={getCourses} title='' description=''/>
+ 
+
       </div>
-    </div>
+      <a className={styles.logoutButton} onClick={()=>{auth.signoutRedirect()}}>Log Out</a>
+    </div> 
   )
 }

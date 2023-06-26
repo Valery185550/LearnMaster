@@ -40,10 +40,6 @@ export function HomePage() {
         }
         return <div>Unrecognized</div>
     }
-
-    let r:SigninRedirectArgs={
-        
-    }
     auth.signinRedirect();
 
     return <></>

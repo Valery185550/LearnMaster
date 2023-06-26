@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), mkcert()],
   server: { https: true , open:true},
   build: {
-    outDir: "build",
+    outDir: "D:/LearnMaster/LearnMaster/wwwroot",
     sourcemap: true,
   },
   test: {
