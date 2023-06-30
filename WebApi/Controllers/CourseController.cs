@@ -45,7 +45,8 @@ namespace WebApi.Controllers
             db.UsersCourses.Add(uc);
 
             db.SaveChanges();
-            return Content("OK");
+
+            return Courses();
         }
 
         [Route("/DeleteCourse")]
@@ -59,7 +60,79 @@ namespace WebApi.Controllers
                 db.SaveChanges();
             }
 
-            return new JsonResult(db.Courses.ToList()); 
+            return Courses();
+        }
+
+        [Route("/LeaveCourse")]
+        [HttpDelete]
+        public IActionResult LeaveCourse(long id)
+        {
+            Course course = db.Courses.Include((c) => c.UsersCourses).Where(c => c.Id == id).ToList()[0];
+            string userId = HttpContext.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+            if (course != null)
+            {
+                foreach(UsersCourse uc in course.UsersCourses.ToList())
+                {
+                    if (uc.UserId == userId)
+                    {
+                        db.UsersCourses.Remove(uc);
+                        db.SaveChanges();
+                    }
+                }
+            }
+
+            return Courses();
+        }
+
+        [Route("/SearchCourse")]
+        [HttpGet]
+        public IActionResult SearchCourse(string name)
+        {
+            Debugger.Break();
+            List<Course> allCoursesByName = db.Courses.Include((c) => c.Notifications).Include((c)=>c.UsersCourses).Where((c) => c.Name == name).ToList();
+            string studentId = HttpContext.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+            List<CourseDTO> result = new List<CourseDTO>();
+            foreach (Course course in allCoursesByName)
+            {
+                bool applied = false;
+                if (course.Notifications.Any((n) => n.StudentId == studentId) || (course.UsersCourses.Any((uc)=>uc.UserId == studentId)))
+                {
+                    applied= true;
+                }
+               
+                result.Add(new CourseDTO { Id=course.Id, Applied = applied, Description = course.Description, Name=course.Name});
+                
+            }
+
+            return new JsonResult(result);
+        }
+
+        [Route("/Apply")]
+        [HttpPost]
+        public IActionResult Apply(long id)
+        {
+             Debugger.Break();
+            Course course = db.Courses.Include((c) => c.UsersCourses).Where(c => c.Id == id).ToList()[0];
+            string userId = HttpContext.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+            List<Notification> alreadyApplied = db.Notifications.Where(n => n.CourseId == course.Id && n.StudentId == userId).ToList();
+            List<UsersCourse> alreadyRegistered = db.UsersCourses.Where((uc) => uc.UserId == userId && uc.CourseId == id).ToList();
+
+            if (alreadyApplied.Count > 0 || alreadyRegistered.Count > 0)
+            {
+                return Courses(); //if already applied just rerurn courses
+            }
+
+            if (course != null)
+            {
+                Notification n = new Notification { CourseId = course.Id, StudentId = userId, Text = $"{userId} wants to join to your course" };
+                db.Notifications.Add(n);
+                db.SaveChanges();
+                
+            }
+
+            return SearchCourse(course.Name);
         }
 
     }

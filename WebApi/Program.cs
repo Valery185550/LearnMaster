@@ -6,9 +6,8 @@ using WebApi;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
 
 builder.Services.AddAuthentication("token")
                 .AddJwtBearer("token", options =>
@@ -31,14 +30,14 @@ builder.Services.AddCors(options =>
     // this defines a CORS policy called "default"
     options.AddPolicy("default", policy =>
     {
-        policy.WithOrigins("https://localhost:5003")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        policy.WithOrigins("https://localhost:5003").AllowAnyHeader().AllowAnyMethod();
     });
 });
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<LearnMasterContext>(options => options.UseSqlite(connection));
+
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -51,5 +50,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers().RequireAuthorization("ApiScope");
+
 
 app.Run();

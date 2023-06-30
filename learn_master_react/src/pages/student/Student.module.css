@@ -1,0 +1,30 @@
+.main{
+    width: 100vw;
+    height: 100vh;
+    background: url("../../images/StudentHomePage1.png") no-repeat;
+    background-size: cover;
+}
+
+.header{
+    margin: 0;
+    color: white;
+    text-align: center;
+    font-size: 40px;
+    padding-top: 10px;
+    text-shadow: 3px 3px 0px rgb(97, 38, 199);
+}
+
+.findNew{
+    text-decoration: none;
+    color: white;
+    text-shadow: 2px 0px 1px rgb(47, 0, 81);
+    display: block;
+    width: 130px;
+    background-color: rgb(122, 55, 255);
+    padding: 10px;
+    border-radius: 10px;
+    position:absolute;
+    top:40px;
+    left: 40px;
+    box-shadow: 3px 1px 2px rgb(54, 24, 113);
+}

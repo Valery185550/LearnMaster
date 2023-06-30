@@ -18,7 +18,10 @@ public partial class LearnMasterContext : DbContext
 
     public virtual DbSet<Lesson> Lessons { get; set; }
 
+    public virtual DbSet<Notification> Notifications { get; set; }
+
     public virtual DbSet<UsersCourse> UsersCourses { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -51,6 +54,13 @@ public partial class LearnMasterContext : DbContext
             entity.Property(e => e.ParentId).HasColumnName("parentId");
 
             entity.HasOne(d => d.Course).WithMany(p => p.Lessons)
+                .HasForeignKey(d => d.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.HasOne(d => d.Course).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.CourseId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
