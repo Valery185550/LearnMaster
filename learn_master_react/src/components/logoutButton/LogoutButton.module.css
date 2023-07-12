@@ -1,0 +1,17 @@
+.main{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    height: 30px;
+    color: white;
+    background-color: #ab60ff;
+    text-shadow: 2px 2px 2px rgb(73, 42, 86);
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 18px;
+    box-shadow: 2px 2px 2px rgb(105, 79, 126);
+}

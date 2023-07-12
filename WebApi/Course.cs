@@ -9,7 +9,11 @@ public partial class Course
 
     public string Name { get; set; } = null!;
 
+    public string Description { get; set; } = null!;
+
     public virtual ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
+
+    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
     public virtual ICollection<UsersCourse> UsersCourses { get; set; } = new List<UsersCourse>();
 }

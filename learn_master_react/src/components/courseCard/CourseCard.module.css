@@ -1,6 +1,6 @@
 .main{
     width: 300px;
-    background-color: rgb(240, 218, 252);
+    background-color: #e4bdff;
     border-radius: 30px;
     box-shadow: 5px 3px 3px rgb(105, 79, 126);
     padding: 20px;
@@ -11,7 +11,10 @@
     height: 370px;
     display: flex;
     flex-direction: column;
+    margin-top: 10px;
+    opacity: 1;
 }
+
 
 .title{
     font-size: 25px;
@@ -27,13 +30,18 @@
     height: 150px;
 }
 
+.buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
 .moreButton{
     display: block;
     text-decoration: none;
     width: 80px;
     height: 30px;
     color: white;
-    background-color: rgb(193, 66, 253);
+    background-color: #ab60ff;
     text-shadow: 2px 2px 2px rgb(73, 42, 86);
     text-align: center;
     padding: 3px;
@@ -42,6 +50,25 @@
     border-radius: 10px;
     font-size: 18px;
     box-shadow: 5px 3px 3px rgb(105, 79, 126);
+    cursor: pointer;
+}
+
+.deleteButton{
+    display: block;
+    text-decoration: none;
+    width: 80px;
+    height: 30px;
+    color: white;
+    background-color: #ab60ff;
+    text-shadow: 2px 2px 2px rgb(73, 42, 86);
+    text-align: center;
+    padding: 3px;
+    padding-top: 7px;
+    margin-right: 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    box-shadow: 5px 3px 3px rgb(105, 79, 126);
+    cursor: pointer;
 }
 
 .addForm{
@@ -58,8 +85,11 @@
     margin-bottom: 20px;
     border-radius: 10px;
     outline: none;
-    border: 1px solid rgb(116, 44, 149);
-    box-shadow: 5px 3px 3px rgb(105, 79, 126);
+    border: 2px solid rgb(188 128 255);
+    box-shadow: 5px 3px 3px rgb(130 0 235);
+    opacity: 0.8;
+    background-color: #f6f2ff;
+    color: #44008b;
 }
 
 .addForm__inputDesc{
@@ -71,10 +101,13 @@
     border-radius: 10px;
     outline: none;
     margin-bottom: 30px;
-    border: 1px solid rgb(116, 44, 149);
-    box-shadow: 5px 3px 3px rgb(105, 79, 126);
+    border: 2px solid rgb(188 128 255);
+    box-shadow: 5px 3px 3px rgb(130 0 235);
     text-decoration: none;
     resize: none;
+    background-color: #f6f2ff;
+    opacity: 0.8;
+    color: #44008b;
 }
 
 .addForm__submit{
@@ -82,9 +115,9 @@
     padding: 10px;
     border-radius: 10px;
     color: white;
-    background-color: rgb(193, 66, 253);
+    background-color: #ab60ff;
     border: none;
-    text-shadow: 2px 2px 2px rgb(73, 42, 86);
+    text-shadow: 2px 2px 2px rgb(48 0 91);
     cursor: pointer;
-    box-shadow: 5px 3px 3px rgb(105, 79, 126);
+    box-shadow: 5px 3px 3px rgb(98 15 163);
 }

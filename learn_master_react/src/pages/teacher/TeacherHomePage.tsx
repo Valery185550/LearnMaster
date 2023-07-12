@@ -4,28 +4,18 @@ import { RootState } from '../../app/store';
 import styles from './TeacherHomePage.module.css';
 import CourseCard from '../../components/courseCard/CourseCard';
 import logo from "../../images/logo1.png";
-import { Course } from '../../types';
+import { Course, Notification } from '../../types';
+import { getCourses, getNotifications } from '../../app/api';
+import { LogoutButton } from '../../components/logoutButton/LogoutButton';
+import { Notification as Notif }  from '../../components/notification/Notification';
 
 
 export function TeacherHomePage() {
 
-  const auth = useSelector((state:RootState)=>state.auth);
   let [courses, setCourses] = useState<Course[]>([]);
- 
-
-  async function myFetch(){
-    const t = await fetch (`https://localhost:7002`, {
-          headers:{
-              "Accept": "application/json",
-              "Authorization": "Bearer " + sessionStorage.getItem("tokenKey")
-          }
-      });
-      let c = await t.json();
-      setCourses(c);
-      debugger;
-  }
+  let [notifications, setNotification] = useState<Notification[]>([]);
   
-  useEffect(()=>{myFetch()},[])
+  useEffect(()=>{getCourses(setCourses), getNotifications(setNotification)},[])
 
 
   return (
@@ -33,10 +23,14 @@ export function TeacherHomePage() {
       <img className={styles.logo} src={logo}/>
       <h2 className={styles.header}>Your courses</h2>
       <div className={styles.content}>
-        {courses.map((c)=><CourseCard title={c.name} description={c.description} />)}
-        <CourseCard title='' description=''/>
-        <button onClick={()=>{auth.signoutRedirect()}}>Log Out</button>
+        {courses.map((c)=><CourseCard id={c.id} role="Teacher" setCourses={setCourses} title={c.name} description={c.description} />)}
+        <CourseCard id={-1} role="" setCourses={setCourses} title='' description=''/>
+        <div >
+          {notifications.map((n)=><Notif id={n.id} setNotification={setNotification} text={n.text} />)}
+        </div>
       </div>
-    </div>
+      
+      <LogoutButton/>
+    </div> 
   )
 }

@@ -11,6 +11,7 @@ import {
 import StudentHomePage from "./pages/student/StudentHomePage"
 import {TeacherHomePage} from "./pages/teacher/TeacherHomePage";
 import { AuthProvider, AuthProviderProps } from "react-oidc-context";
+import { FindCourse } from "./pages/findCourse/FindCourse"
 
 const router = createBrowserRouter([{
   path:"/",
@@ -23,6 +24,11 @@ const router = createBrowserRouter([{
   {
     path:"/Teacher",
     element:<TeacherHomePage/>
+  },
+
+  {
+    path:"/FindCourse",
+    element:<FindCourse/>
   },
   
 ])

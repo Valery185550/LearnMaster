@@ -1,11 +1,9 @@
 import React from "react";
-import styles from "./HomePage.module.css";
 import { AuthContextProps, useAuth } from "react-oidc-context";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getAuth } from "../../app/authSlice";
-import { SigninRedirectArgs } from "oidc-client-ts";
 
 export function HomePage() {
 
@@ -30,8 +28,9 @@ export function HomePage() {
 
     if (auth.isAuthenticated) {
 
-        debugger; 
+        
         sessionStorage.setItem("tokenKey", auth.user?.access_token!);
+        
         if(auth.user?.profile.user_role == "Teacher"){
             nav="/Teacher"
         }
@@ -39,10 +38,6 @@ export function HomePage() {
             nav = "/Student"
         }
         return <div>Unrecognized</div>
-    }
-
-    let r:SigninRedirectArgs={
-        
     }
     auth.signinRedirect();
 
