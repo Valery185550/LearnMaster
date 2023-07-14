@@ -2,6 +2,9 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
+*.jpg binary -delta
+*.zip binary -delta
+*.mp4 binary -delta
 
 ###############################################################################
 # Set default behavior for command prompt diff.
@@ -40,7 +43,7 @@
 #
 # image files are treated as binary by default.
 ###############################################################################
-#*.jpg   binary
+
 #*.png   binary
 #*.gif   binary
 

@@ -1,0 +1,38 @@
+.main{
+    width: 300px;
+    color: #52137e;
+    background-color: #d3bdff;
+    margin-right: 20px;
+    text-align: center;
+    padding-top: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.name{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.description{
+    margin-bottom: 10px;
+    height: 150px;
+}
+
+.button{
+    font-size: 16px;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #855ddd;
+    border-radius: 5px;
+    
+}
+
+.button__active{
+    background-color: #a77eff;
+}
+
+.button__disabled{
+    background-color: rgb(50, 42, 103);
+    color: white;
+}

@@ -1,0 +1,52 @@
+.main{
+    width: 100vw;
+    height: 100vh;
+    background: url("../../images/StudentHomePage1.png") no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search{
+    padding-top: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.search__input{
+    width: 40%;
+    font-size: 18px;
+    border-radius: 12px;
+    padding: 10px;
+    padding-left: 15px;
+    outline: none;
+    margin-right: 10px;
+    background-color: #dfd4ff;
+}
+
+.search__find{
+    width: 80px;
+    font-size: 16px;
+    padding: 5px;
+    background-color: #958efd;
+    border-radius: 10px;
+    cursor:pointer;
+    font-weight: 600;
+    font-family: 'Noto Serif', serif;
+    color: rgb(1, 51, 104);
+    text-shadow: 1px 1px 1px rgb(65, 55, 253);
+
+}
+
+.content{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 1000px;
+    height: 280px;
+    overflow: auto;   
+}
