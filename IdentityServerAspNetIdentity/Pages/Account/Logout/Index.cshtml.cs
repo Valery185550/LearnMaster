@@ -18,7 +18,6 @@ public class Index : PageModel
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IIdentityServerInteractionService _interaction;
-    private readonly IEventService _events;
 
     [BindProperty]
     public string LogoutId { get; set; }
@@ -27,7 +26,6 @@ public class Index : PageModel
     {
         _signInManager = signInManager;
         _interaction = interaction;
-        _events = events;
     }
 
     public async Task<IActionResult> OnGet(string logoutId)

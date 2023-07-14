@@ -39,13 +39,13 @@ internal static class HostingExtensions
         builder.Services.AddAuthentication()
             .AddGoogle(options =>
             {
-               
 
+                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
                 // register your IdentityServer with Google at https://console.developers.google.com
                 // enable the Google+ API
                 // set the redirect URI to https://localhost:5001/signin-google
-                options.ClientId = "copy client ID from Google here";
-                options.ClientSecret = "copy client secret from Google here";
+                options.ClientId = "905238119614-qtrioedmjplvf42pmibg335uv8kd055p.apps.googleusercontent.com";
+                options.ClientSecret = "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";
             });
 
         return builder.Build();
