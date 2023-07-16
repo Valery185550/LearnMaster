@@ -5,7 +5,7 @@ name: .NET
 
 on:
   push:
-    branches: [ "Develop" ]
+    branches: [ "Master" ]
   workflow_dispatch:
 
 jobs:
@@ -14,8 +14,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup SQLite environment
-      uses: ccorsi/setup-sqlite@v1.0.1
+    - uses: actions/setup-sqlite@v1
+      with:
+        sqlite-version: 3.40.0
+        sqlite-year: 2022
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
