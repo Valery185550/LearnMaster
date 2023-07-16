@@ -1,0 +1,70 @@
+.main{
+    width: 100vw;
+    height: 100vh;
+    background: url("../../images/TeacherHomePage.png") no-repeat;
+    background-size: cover;
+
+}
+
+.form{
+    padding-top: 80px;
+    display: grid;
+    grid-template-areas: "title title"
+    "text text"
+    "download add";
+    max-width: 50%;
+    margin: 0 auto;
+}
+
+.title{
+    grid-area: title;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    outline: none;
+    background-color: #e1c3ff;
+    box-shadow: 4px 2px 1px #b56cffc4;
+    border: none;
+    color:#4b0a88;
+    margin-bottom: 20px;
+    
+}
+
+.text{
+    grid-area: text;
+    resize: none;
+    height: 450px;
+    border-radius: 5px;
+    background-color: #e1c3ff;
+    box-shadow: 4px 2px 1px #b56cffc4;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    outline: none;
+    margin-bottom: 20px;
+    color:#4b0a88;
+    overflow: auto;
+}
+
+.inputVideo{
+    grid-area: download;
+    font-size: 18px;
+    padding: 10px;
+    width: max-content;
+}
+
+.submit{
+    grid-area: add;
+    width: max-content;
+    background-color: rgb(185, 116, 255);
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+    padding: 10px;
+    color:#4b0a88;
+    border: none;
+    justify-self: end;
+    box-shadow: 4px 2px 1px #b56cffc4;
+    cursor: pointer;
+    
+}

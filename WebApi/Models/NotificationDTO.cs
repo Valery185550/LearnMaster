@@ -6,8 +6,6 @@
 
         public string Text { get; set; } 
 
-        public string StudentId { get; set; } 
-
         public long CourseId { get; set; }
     }
 }

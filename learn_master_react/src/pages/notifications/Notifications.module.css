@@ -1,0 +1,13 @@
+.main{
+    background:url("../../images/TeacherHomePage.png") no-repeat;
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+}
+
+.notifications{
+    max-height: 380px;
+    display: grid;
+    justify-content: center;
+    padding-top: 100px;
+}

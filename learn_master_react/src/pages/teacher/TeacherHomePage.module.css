@@ -21,26 +21,37 @@
     padding-top: 30px;
 }
 
-.content{
+.courses{
     display: flex;
     justify-content:flex-start;
     flex-wrap: wrap;
     align-items: center;
     max-width: 1100px;
-    max-height: 380px;
+    max-height: 500px;
     overflow: auto;
     margin-left: 350px;
 }
 
-.logo{
-    position: absolute;
-    top: 10px;
-    left: 30px;
-    max-width: 300px;
-}
 
 .add{
     position: absolute;
     top: 30px;
     right: 550px;
+}
+
+.notifButton{
+    position: absolute;
+    top: 30px;
+    right: 150px;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    color: white;
+    background-color: #ab60ff;
+    text-shadow: 2px 2px 2px rgb(73, 42, 86);
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 18px;
+    box-shadow: 2px 2px 2px rgb(105, 79, 126);
 }

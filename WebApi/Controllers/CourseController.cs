@@ -12,62 +12,76 @@ namespace WebApi.Controllers
     [Authorize]
     public class CourseController : ControllerBase
     {
-        LearnMasterContext db;
+        LearnMasterContext _db;
         public CourseController(LearnMasterContext db)
         {
-            this.db = db;
+            this._db = db;
         }
 
         [Route("/getCourses")]
         [HttpGet]
-        public IActionResult  Courses()
+        public async Task<IActionResult>  Courses()
         {
             string userId = HttpContext.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
 
-            List<UsersCourse> uc = db.UsersCourses.Include((p) => p.Course).Where((p) => p.UserId == userId).ToList();
+            List<UsersCourse> uc = await _db.UsersCourses.Include((p) => p.Course).Where((p) => p.UserId == userId).ToListAsync();
             List<CourseDTO> courses = new List<CourseDTO>();
-            uc.ForEach((u) => courses.Add(new CourseDTO { Name = u.Course.Name, Description = u.Course.Description, Id = u.CourseId }));
+            uc.ForEach((u) => courses.Add(new CourseDTO { Title = u.Course.Title, Description = u.Course.Description, Id = u.CourseId }));
             
             return new JsonResult(courses);
             
         }
 
+        [Route("Course")]
+        [HttpGet]
+        public async Task<IActionResult> Course(long courseId)
+        {
+            List<Course> courses = await _db.Courses.Where((c)=>c.Id==courseId).ToListAsync();
+            if (courses.Count>0)
+            {
+                Course course = courses[0];
+                CourseDTO courseDTO= new CourseDTO { Id=course.Id, Title=course.Title, Description=course.Description };
+                return new JsonResult(courseDTO);
+            }
+            return new JsonResult(null);
+        }
+
         [Route("/Course/PostCourse")]
         [HttpPost]
-        public IActionResult PostCourse([FromBody] CourseDTO course)
+        public async Task<IActionResult> PostCourse([FromBody] CourseDTO course)
         {
             string userId = HttpContext.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
             
-            Course newCourse = new Course { Name = course.Name, Description=course.Description };
-            db.Courses.Add(newCourse);
+            Course newCourse = new Course { Title = course.Title, Description=course.Description };
+            _db.Courses.Add(newCourse);
 
             UsersCourse uc = new UsersCourse { Course= newCourse, UserId=userId};
-            db.UsersCourses.Add(uc);
+            _db.UsersCourses.Add(uc);
 
-            db.SaveChanges();
+            _db.SaveChanges();
 
-            return Courses();
+            return await Courses();
         }
 
         [Route("/DeleteCourse")]
         [HttpDelete]
-        public IActionResult DeleteCourse(long id)
+        public async Task<IActionResult> DeleteCourse(long id)
         {
-            Course course = db.Courses.Include((c) =>c.UsersCourses).Where(c => c.Id == id).ToList()[0];
-            if(course!= null)
+            List<Course> courses = await _db.Courses.Include((c) =>c.UsersCourses).Where(c => c.Id == id).ToListAsync();
+            if (courses.Count > 0)
             {
-                db.Courses.Remove(course);
-                db.SaveChanges();
+                Course course = courses[0];
+                _db.Courses.Remove(course);
+                _db.SaveChanges();
             }
-
-            return Courses();
+            return await Courses();
         }
 
         [Route("/LeaveCourse")]
         [HttpDelete]
-        public IActionResult LeaveCourse(long id)
+        public async Task<IActionResult> LeaveCourse(long id)
         {
-            Course course = db.Courses.Include((c) => c.UsersCourses).Where(c => c.Id == id).ToList()[0];
+            Course course = _db.Courses.Include((c) => c.UsersCourses).Where(c => c.Id == id).ToList()[0];
             string userId = HttpContext.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
             if (course != null)
             {
@@ -75,21 +89,21 @@ namespace WebApi.Controllers
                 {
                     if (uc.UserId == userId)
                     {
-                        db.UsersCourses.Remove(uc);
-                        db.SaveChanges();
+                        _db.UsersCourses.Remove(uc);
+                        _db.SaveChanges();
                     }
                 }
             }
 
-            return Courses();
+            return await Courses();
         }
 
         [Route("/SearchCourse")]
         [HttpGet]
-        public IActionResult SearchCourse(string name)
+        public async Task<IActionResult> SearchCourse(string title)
         {
-            Debugger.Break();
-            List<Course> allCoursesByName = db.Courses.Include((c) => c.Notifications).Include((c)=>c.UsersCourses).Where((c) => c.Name == name).ToList();
+            
+            List<Course> allCoursesByName = _db.Courses.Include((c) => c.Notifications).Include((c)=>c.UsersCourses).Where((c) => c.Title == title).ToList();
             string studentId = HttpContext.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
 
             List<CourseDTO> result = new List<CourseDTO>();
@@ -101,7 +115,7 @@ namespace WebApi.Controllers
                     applied= true;
                 }
                
-                result.Add(new CourseDTO { Id=course.Id, Applied = applied, Description = course.Description, Name=course.Name});
+                result.Add(new CourseDTO { Id=course.Id, Applied = applied, Description = course.Description, Title = course.Title });
                 
             }
 
@@ -110,29 +124,32 @@ namespace WebApi.Controllers
 
         [Route("/Apply")]
         [HttpPost]
-        public IActionResult Apply(long id)
+        public async Task<IActionResult> Apply(long id)
         {
-             Debugger.Break();
-            Course course = db.Courses.Include((c) => c.UsersCourses).Where(c => c.Id == id).ToList()[0];
+            
+            Course course = _db.Courses.Include((c) => c.UsersCourses).Where(c => c.Id == id).ToList()[0];
             string userId = HttpContext.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
 
-            List<Notification> alreadyApplied = db.Notifications.Where(n => n.CourseId == course.Id && n.StudentId == userId).ToList();
-            List<UsersCourse> alreadyRegistered = db.UsersCourses.Where((uc) => uc.UserId == userId && uc.CourseId == id).ToList();
+            List<Notification> alreadyApplied = _db.Notifications.Where(n => n.CourseId == course.Id && n.StudentId == userId).ToList();
+            List<UsersCourse> alreadyRegistered = _db.UsersCourses.Where((uc) => uc.UserId == userId && uc.CourseId == id).ToList();
 
             if (alreadyApplied.Count > 0 || alreadyRegistered.Count > 0)
             {
-                return Courses(); //if already applied just rerurn courses
+                return await Courses(); //if already applied just rerurn courses
             }
 
             if (course != null)
-            {
-                Notification n = new Notification { CourseId = course.Id, StudentId = userId, Text = $"{userId} wants to join to your course" };
-                db.Notifications.Add(n);
-                db.SaveChanges();
+            { 
+            
+                HttpClient client = new HttpClient();
+                string studentName = await client.GetStringAsync($"https://localhost:5001/User?userId={userId}");
+                Notification n = new Notification { CourseId = course.Id, StudentId = userId, Text = $"{studentName}   wants to join to your course {course.Title}" };
+                _db.Notifications.Add(n);
+                _db.SaveChanges();
                 
             }
 
-            return SearchCourse(course.Name);
+            return await SearchCourse(course.Title);
         }
 
     }

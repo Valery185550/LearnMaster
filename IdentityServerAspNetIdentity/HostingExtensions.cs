@@ -1,10 +1,8 @@
 using Duende.IdentityServer;
 using IdentityServerAspNetIdentity.Data;
 using IdentityServerAspNetIdentity.Models;
-using IdentityServerAspNetIdentity.Pages.Register;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace IdentityServerAspNetIdentity;
@@ -13,6 +11,7 @@ internal static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.Services.AddControllers();
         builder.Services.AddRazorPages();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -25,9 +24,6 @@ internal static class HostingExtensions
         builder.Services
             .AddIdentityServer(options =>
             {
-                
-
-                // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
                 options.EmitStaticAudienceClaim = true;
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
@@ -66,6 +62,7 @@ internal static class HostingExtensions
 
         app.UseAuthorization();
 
+        app.MapControllers();
         app.MapRazorPages().RequireAuthorization();
 
         return app;

@@ -10,22 +10,23 @@ namespace WebApi.Controllers
     [Authorize]
     public class NotificationController : Controller
     {
-        LearnMasterContext db;
+        LearnMasterContext _db;
         public NotificationController(LearnMasterContext db)
         {
-            this.db = db;
+            this._db = db;
         }
 
         [Route("/getNotifications")]
         [HttpGet]
-        public IActionResult GetNotifications()
+        public async Task<IActionResult> GetNotifications()
         {
-            Debugger.Break();
             string teacherId = HttpContext.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
-            List<Course> teacherCourses = db.Courses.Include((c) => c.UsersCourses).Where((c) => c.UsersCourses.Any((uc) => uc.UserId == teacherId)).ToList();
-            List<Notification> teacherNotifications = db.Notifications.Include((n)=>n.Course).Where((n)=>teacherCourses.Contains(n.Course)).ToList();
+            List<Course> teacherCourses = await _db.Courses.Include((c) => c.UsersCourses).Where((c) => c.UsersCourses.Any((uc) => uc.UserId == teacherId)).ToListAsync();
+            List<Notification> teacherNotifications = await _db.Notifications.Include((n)=>n.Course).Where((n)=>teacherCourses.Contains(n.Course)).ToListAsync();
             List<NotificationDTO> result = new List<NotificationDTO>();
-            teacherNotifications.ForEach((tn) => { result.Add(new NotificationDTO { Id=tn.Id, CourseId = tn.CourseId, StudentId= tn.StudentId, Text = tn.Text }); });
+            HttpClient client= new HttpClient();
+            teacherNotifications.ForEach((tn) => {
+                result.Add(new NotificationDTO { Id=tn.Id, CourseId = tn.CourseId, Text = tn.Text }); });
             return new JsonResult(result);
         }
 
@@ -33,34 +34,33 @@ namespace WebApi.Controllers
 
         [Route("/Join")]
         [HttpDelete]
-        public IActionResult Join (long notificationId)
+        public async Task<IActionResult> Join (long notificationId)
         {
-            Notification notification = db.Notifications.Where((n) => n.Id == notificationId).ToList()[0];
+            List <Notification> notifications = await _db.Notifications.Where((n) => n.Id == notificationId).ToListAsync();
+            Notification notification = notifications[0];
             if(notification != null)
             {
                 UsersCourse uc = new UsersCourse { UserId = notification.StudentId, CourseId = notification.CourseId };
-                db.UsersCourses.Add(uc);
-                db.Notifications.Remove(notification);
-                db.SaveChanges();
+                _db.UsersCourses.Add(uc);
+                _db.Notifications.Remove(notification);
+                _db.SaveChanges();
             }
 
-            return GetNotifications();
-            
-            
+            return await GetNotifications();
         }
 
         [Route("/Reject")]
         [HttpDelete]
-        public IActionResult Reject(long notificationId)
+        public async Task<IActionResult> Reject(long notificationId)
         {
-            Notification notification = db.Notifications.Where((n) => n.Id == notificationId).ToList()[0];
+            Notification notification = _db.Notifications.Where((n) => n.Id == notificationId).ToList()[0];
             if (notification != null)
             {
-                db.Notifications.Remove(notification);
-                db.SaveChanges();
+                _db.Notifications.Remove(notification);
+                _db.SaveChanges();
             }
 
-            return GetNotifications();
+            return await GetNotifications();
         }
 
     }

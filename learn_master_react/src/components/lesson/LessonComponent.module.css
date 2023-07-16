@@ -1,0 +1,45 @@
+.main {
+    font-size: 18px;
+    padding: 5px 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    max-width: 50%;
+    display: grid;
+    grid-template-columns: 1fr max-content max-content;
+}
+
+.main__teacher{
+    background-color: rgba(194, 120, 251, 0.85);
+}
+
+.main__student{
+    background-color: #9562ffb8;
+}
+
+.name{
+    text-decoration: none;
+    color: white;
+    align-self: center;
+    cursor: pointer;
+    padding: 5px 0;
+}
+
+.button{
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    justify-self: flex-end;
+    cursor: pointer;
+    background-color: rgba(122, 46, 194, 0.7);
+}
+
+.addLink{
+    text-decoration: none;
+}
+
+.deleteButton{
+    outline: none;
+    border: none;
+    font-size: 18px;
+    margin-left: 10px;
+}

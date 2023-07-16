@@ -1,0 +1,27 @@
+.main{
+   display: grid;
+   grid-template-areas: 
+   "name date"
+   "text text";
+}
+
+.name{
+    grid-area: name;
+    color: white;
+}
+
+.date{
+    grid-area: date;
+    color: white;
+    justify-self: flex-end;
+}
+
+.text{
+    grid-area: text;
+    color: black;
+    width: max-content;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: #ffffffb5;
+    margin-bottom: 10px;
+}

@@ -91,13 +91,13 @@ namespace IdentityServerAspNetIdentity.Pages.Register
         {
             ReturnUrl = redirect_uri;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            Debugger.Break();
+            
             
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl, string user_role)
         {
-            Debugger.Break();
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             try
             {
                 if (ModelState.IsValid)
@@ -106,12 +106,12 @@ namespace IdentityServerAspNetIdentity.Pages.Register
                     await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                     var result = _userManager.CreateAsync(user, Input.Password).Result;
 
-                    await _userManager.AddClaimsAsync(user, new Claim[]{
-                        new Claim(JwtClaimTypes.Name, Input.Email),
-                    });
-
+                    
                     if (result.Succeeded)
                     {
+                        await _userManager.AddClaimsAsync(user, new Claim[]{
+                        new Claim(JwtClaimTypes.Name, Input.Email),
+                        });
                         return Redirect($"/Account/Login/Index?returnUrl={returnUrl}");
                     }
 
@@ -123,7 +123,7 @@ namespace IdentityServerAspNetIdentity.Pages.Register
             }
             catch (Exception ex)
             {
-               Console.WriteLine(ex.ToString());
+                ModelState.AddModelError(string.Empty, ex.Message);
             }
 
             return Page();

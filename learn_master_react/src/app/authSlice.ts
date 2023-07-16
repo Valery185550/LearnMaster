@@ -1,5 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { AuthContext, AuthContextProps } from "react-oidc-context";
+import { createSlice } from "@reduxjs/toolkit";
 
 let initialState:any ={};
 

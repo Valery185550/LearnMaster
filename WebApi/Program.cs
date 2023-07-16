@@ -1,9 +1,11 @@
 
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WebApi;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -25,31 +27,31 @@ builder.Services.AddAuthorization(options =>
     })
 );
 
-builder.Services.AddCors(options =>
-{
-    // this defines a CORS policy called "default"
-    options.AddPolicy("default", policy =>
-    {
-        policy.WithOrigins("https://localhost:5003").AllowAnyHeader().AllowAnyMethod();
-    });
-});
-
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<LearnMasterContext>(options => options.UseSqlite(connection));
 
 builder.Services.AddSignalR();
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Limits.MaxRequestBodySize = 524288000;
+    
+});
+builder.Services.Configure<FormOptions>(options => options.MultipartBodyLengthLimit = 524288000);
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
-
 app.UseHttpsRedirection();
-
-app.UseCors("default");
-
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers().RequireAuthorization("ApiScope");
-
-
 app.Run();

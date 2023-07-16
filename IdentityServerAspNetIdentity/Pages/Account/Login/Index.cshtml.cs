@@ -16,7 +16,7 @@ namespace IdentityServerAspNetIdentity.Pages.Login;
 [AllowAnonymous]
 public class Index : PageModel
 {
-    private readonly UserManager<ApplicationUser> _userManager;
+    
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IEventService _events;
@@ -33,10 +33,8 @@ public class Index : PageModel
         IAuthenticationSchemeProvider schemeProvider,
         IIdentityProviderStore identityProviderStore,
         IEventService events,
-        UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager)
     {
-        _userManager = userManager;
         _signInManager = signInManager;
         _interaction = interaction;
         _schemeProvider = schemeProvider;

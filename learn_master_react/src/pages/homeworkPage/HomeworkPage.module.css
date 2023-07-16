@@ -1,0 +1,48 @@
+.main{
+    width: 100vw;
+    height: 100vh;
+    background: url("../../images/TeacherHomePage.png") no-repeat;
+    background-size: cover;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header{
+    padding-top: 30px;
+    font-size: 25px;
+    color: #c781ff;
+    margin-bottom: 20px;
+}
+
+.img{
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.markForm{
+    margin-bottom: 20px;
+}
+
+.markInput{
+    font-size: 18px;
+    padding: 10px 20px;
+    outline: none;
+    margin-right: 20px;
+    border-radius: 10px;
+    border: 1px solid #c781ff;
+    font-family: 'Noto Serif', serif;
+    width: 70px;
+}
+
+.markSubmit{
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: #c781ff;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Noto Serif', serif;
+    cursor: pointer;
+}
