@@ -362,9 +362,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/WebApi/LearnMaster.db
-/IdentityServerAspNetIdentity/AspIdUsers.db
-/IdentityServerAspNetIdentity/AspIdUsers.db-shm
-/IdentityServerAspNetIdentity/AspIdUsers.db-wal
-/WebApi/LearnMaster.db-shm
-/WebApi/LearnMaster.db-wal
+
