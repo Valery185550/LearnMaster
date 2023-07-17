@@ -9,4 +9,5 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.MapHub<ChatHub>("/chat");
+//app.MapFallbackToFile("index.html");
 app.Run();
