@@ -8,13 +8,11 @@ public partial class LearnMasterContext : DbContext
 {
     public LearnMasterContext()
     {
-        Database.EnsureCreated();
     }
 
     public LearnMasterContext(DbContextOptions<LearnMasterContext> options)
         : base(options)
     {
-        Database.EnsureCreated();
     }
 
     public virtual DbSet<Course> Courses { get; set; }
